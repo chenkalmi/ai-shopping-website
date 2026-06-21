@@ -1,10 +1,11 @@
 from fastapi import FastAPI
 from backend.app.routers.auth import router as auth_router
+from backend.app.routers.products import router as products_router
 
 app = FastAPI(title="AI Shopping Website")
 
 app.include_router(auth_router)
-
+app.include_router(products_router)
 
 @app.get("/")
 def root():
