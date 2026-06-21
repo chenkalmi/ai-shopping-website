@@ -22,12 +22,17 @@ The project is built with FastAPI, MySQL and SQLAlchemy and is designed to suppo
 - Password hashing using bcrypt
 - Store users in MySQL database
 
-### User Login
+### User Login and Authentication
 
 - Login using username and password
 - Verify password against stored hash
-- Return success response for valid credentials
+- Return JWT access token after successful login
 - Return error response for invalid credentials
+- Token expiration support
+- Decode and validate JWT tokens
+- Protected routes using authentication
+- Retrieve current authenticated user
+- Swagger authorization support
 
 ### Product Management
 
@@ -56,6 +61,9 @@ The project is built with FastAPI, MySQL and SQLAlchemy and is designed to suppo
 - Pydantic
 - MySQL
 - Passlib (bcrypt)
+- python-jose (JWT)
+- OAuth2PasswordBearer
+- python-multipart
 
 ### Database
 
@@ -87,6 +95,8 @@ ml_model/
 POST /auth/register
 
 POST /auth/login
+
+GET /auth/me
 
 ### Products
 
@@ -170,9 +180,28 @@ Next Step:
 
 ---
 
+### Phase 3 - JWT Authentication ✅
+
+Implemented:
+
+- JWT access token creation
+- Token expiration
+- JWT decoding and validation
+- Current user authentication
+- Protected route example with /auth/me
+- Swagger authorization integration
+- OAuth2 password form login support
+
+Completed: June 2026
+
+Next Step:
+
+- Favorites system
+
+---
+
 ## Planned Features
 
-- JWT Authentication
 - Favorites system
 - Shopping cart
 - Orders management
