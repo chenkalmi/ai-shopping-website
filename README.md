@@ -49,6 +49,15 @@ The project is built with FastAPI, MySQL and SQLAlchemy and is designed to suppo
 - Combine multiple filters
 - Return error when no products are found
 
+### Favorites System
+
+- Add products to favorites
+- Remove products from favorites
+- View favorite products
+- Prevent duplicate favorites
+- Favorites persist in database
+- Favorites available only for authenticated users
+
 ---
 
 ## Technologies
@@ -106,6 +115,14 @@ GET /products
 
 GET /products/search
 
+### Favorites
+
+POST /favorites
+
+GET /favorites
+
+DELETE /favorites/{product_id}
+
 ---
 
 ## Database
@@ -133,6 +150,14 @@ Fields:
 - price
 - stock
 
+### Favorites Table
+
+Fields:
+
+- id
+- user_id
+- product_id
+
 ---
 
 ## Development Progress
@@ -149,11 +174,6 @@ Implemented:
 - Swagger testing
 
 Completed: June 2026
-
-Next Step:
-
-- Product model
-- Product APIs
 
 ---
 
@@ -174,13 +194,9 @@ Implemented:
 
 Completed: June 2026
 
-Next Step:
-
-- JWT Authentication
-
 ---
 
-### Phase 3 - JWT Authentication ✅
+### Phase 3 - Authentication & Favorites ✅
 
 Implemented:
 
@@ -191,18 +207,22 @@ Implemented:
 - Protected route example with /auth/me
 - Swagger authorization integration
 - OAuth2 password form login support
+- Favorites table
+- Add favorite
+- Remove favorite
+- View favorites
+- Duplicate favorite prevention
 
 Completed: June 2026
 
 Next Step:
 
-- Favorites system
+- Shopping cart
 
 ---
 
 ## Planned Features
 
-- Favorites system
 - Shopping cart
 - Orders management
 - AI recommendation engine
