@@ -1,7 +1,6 @@
-# AI_SHOPPING_WEBSITE
-AI shopping website with FastAPI and ChatGPT
-
 # AI Shopping Website
+
+AI shopping website built with FastAPI, MySQL and ChatGPT integration.
 
 ## Overview
 
@@ -30,6 +29,21 @@ The project is built with FastAPI, MySQL and SQLAlchemy and is designed to suppo
 - Return success response for valid credentials
 - Return error response for invalid credentials
 
+### Product Management
+
+- Create new products
+- Store products in MySQL database
+- Retrieve all products
+
+### Product Search
+
+- Search products by name
+- Multi-word search support
+- Search by price (<, >, =)
+- Search by stock (<, >, =)
+- Combine multiple filters
+- Return error when no products are found
+
 ---
 
 ## Technologies
@@ -43,18 +57,22 @@ The project is built with FastAPI, MySQL and SQLAlchemy and is designed to suppo
 - MySQL
 - Passlib (bcrypt)
 
+### Database
+
+- MySQL
+
 ---
 
 ## Project Structure
 
 backend/
 ├── app/
-│ ├── database/
-│ ├── models/
-│ ├── routers/
-│ ├── schemas/
-│ ├── services/
-│ └── main.py
+│   ├── database/
+│   ├── models/
+│   ├── routers/
+│   ├── schemas/
+│   ├── services/
+│   └── main.py
 
 frontend/
 
@@ -69,6 +87,14 @@ ml_model/
 POST /auth/register
 
 POST /auth/login
+
+### Products
+
+POST /products
+
+GET /products
+
+GET /products/search
 
 ---
 
@@ -88,23 +114,67 @@ Fields:
 - username
 - password_hash
 
+### Products Table
+
+Fields:
+
+- id
+- name
+- price
+- stock
+
 ---
 
-## Current Status
+## Development Progress
 
-Completed:
+### Phase 1 - User Management ✅
+
+Implemented:
 
 - Database connection
 - Users table
-- Registration API
-- Login API
-- Password hashing
+- User registration API
+- User login API
+- Password hashing with bcrypt
 - Swagger testing
 
-Next Steps:
+Completed: June 2026
 
-- JWT Authentication
+Next Step:
+
 - Product model
 - Product APIs
+
+---
+
+### Phase 2 - Product Management ✅
+
+Implemented:
+
+- Products table
+- Product model
+- Product schema
+- Product creation API
+- Product listing API
+- Product search API
+- Search by name
+- Search by price
+- Search by stock
+- Multi-word search support
+
+Completed: June 2026
+
+Next Step:
+
+- JWT Authentication
+
+---
+
+## Planned Features
+
+- JWT Authentication
+- Favorites system
 - Shopping cart
+- Orders management
 - AI recommendation engine
+- Frontend integration
