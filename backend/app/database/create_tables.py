@@ -1,6 +1,7 @@
 from backend.app.database.connection import engine, Base
 from backend.app.models.user import User
 from backend.app.models.product import Product
+from backend.app.models.favorite import Favorite
 
 Base.metadata.create_all(bind=engine)
 
