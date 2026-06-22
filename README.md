@@ -58,6 +58,24 @@ The project is built with FastAPI, MySQL and SQLAlchemy and is designed to suppo
 - Favorites persist in database
 - Favorites available only for authenticated users
 
+### Orders Management
+
+- Create temporary orders automatically
+- Add products to temporary orders
+- Prevent ordering more items than available stock
+- View current temporary order
+- Remove products from temporary order
+- Automatically delete empty temporary orders
+- Purchase orders
+- Update product stock after purchase
+- Save shipping address
+- Calculate total order price
+- Convert temporary orders to closed orders
+- View order history
+- View order details
+- Orders persist in database
+- Orders available only for authenticated users
+
 ---
 
 ## Technologies
@@ -123,6 +141,20 @@ GET /favorites
 
 DELETE /favorites/{product_id}
 
+### Orders
+
+POST /orders/items
+
+GET /orders/temp
+
+DELETE /orders/items/{product_id}
+
+POST /orders/purchase
+
+GET /orders
+
+GET /orders/{order_id}
+
 ---
 
 ## Database
@@ -157,6 +189,27 @@ Fields:
 - id
 - user_id
 - product_id
+
+### Orders Table
+
+Fields:
+
+- id
+- user_id
+- order_date
+- shipping_address
+- total_price
+- status (TEMP / CLOSED)
+
+### Order Items Table
+
+Fields:
+
+- id
+- order_id
+- product_id
+- quantity
+- price_at_purchase
 
 ---
 
@@ -221,9 +274,33 @@ Next Step:
 
 ---
 
+### Phase 4 - Orders Management ✅
+
+Implemented:
+
+- Orders table
+- Order items table
+- Temporary order creation
+- Add products to temporary orders
+- Remove products from temporary orders
+- View temporary order
+- Purchase order
+- Shipping address support
+- Stock validation
+- Stock update after purchase
+- Automatic total price calculation
+- Order history
+- Order details
+- Automatic deletion of empty temporary orders
+- Closed and temporary order status support
+
+Completed: June 2026
+
+Next Step:
+
+- AI recommendation engine
+
 ## Planned Features
 
-- Shopping cart
-- Orders management
 - AI recommendation engine
 - Frontend integration
