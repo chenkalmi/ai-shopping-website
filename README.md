@@ -76,6 +76,15 @@ The project is built with FastAPI, MySQL and SQLAlchemy and is designed to suppo
 - Orders persist in database
 - Orders available only for authenticated users
 
+### Chat Assistant
+
+- ChatGPT-powered shopping assistant
+- Authenticated users only
+- Product-aware responses
+- Available and out-of-stock product awareness
+- Prompt usage tracking
+- Maximum 5 prompts per user
+- OpenAI API integration
 ---
 
 ## Technologies
@@ -91,6 +100,9 @@ The project is built with FastAPI, MySQL and SQLAlchemy and is designed to suppo
 - python-jose (JWT)
 - OAuth2PasswordBearer
 - python-multipart
+- OpenAI API
+- OpenAI Python SDK
+- python-dotenv
 
 ### Database
 
@@ -154,6 +166,10 @@ POST /orders/purchase
 GET /orders
 
 GET /orders/{order_id}
+
+### Chat
+
+POST /chat
 
 ---
 
@@ -300,7 +316,21 @@ Next Step:
 
 - AI recommendation engine
 
-## Planned Features
+### Phase 5 - Chat Assistant ✅
 
-- AI recommendation engine
+Implemented:
+
+- OpenAI integration
+- Chat request schema
+- Chat service
+- Product context generation
+- Prompt usage tracking
+- 5 prompts limit per user
+- Chat endpoint
+- Error handling
+
+Completed: June 2026
+
+Next Step:
+
 - Frontend integration
