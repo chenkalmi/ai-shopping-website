@@ -33,12 +33,15 @@ The project is built with FastAPI, MySQL and SQLAlchemy and is designed to suppo
 - Protected routes using authentication
 - Retrieve current authenticated user
 - Swagger authorization support
+- User logout
+- Delete current user account
 
 ### Product Management
 
 - Create new products
 - Store products in MySQL database
 - Retrieve all products
+- Retrieve available products only
 
 ### Product Search
 
@@ -85,6 +88,8 @@ The project is built with FastAPI, MySQL and SQLAlchemy and is designed to suppo
 - Prompt usage tracking
 - Maximum 5 prompts per user
 - OpenAI API integration
+- OpenAI quota error handling
+
 ---
 
 ## Technologies
@@ -137,6 +142,10 @@ POST /auth/login
 
 GET /auth/me
 
+POST /auth/logout
+
+DELETE /auth/me
+
 ### Products
 
 POST /products
@@ -144,6 +153,8 @@ POST /products
 GET /products
 
 GET /products/search
+
+GET /products/available
 
 ### Favorites
 
@@ -227,6 +238,14 @@ Fields:
 - quantity
 - price_at_purchase
 
+### Chat Usage Table
+
+Fields:
+
+- id
+- user_id
+- prompt_count
+
 ---
 
 ## Development Progress
@@ -260,6 +279,7 @@ Implemented:
 - Search by price
 - Search by stock
 - Multi-word search support
+- Available products endpoint
 
 Completed: June 2026
 
@@ -276,6 +296,8 @@ Implemented:
 - Protected route example with /auth/me
 - Swagger authorization integration
 - OAuth2 password form login support
+- User logout
+- Delete current user account
 - Favorites table
 - Add favorite
 - Remove favorite
@@ -283,10 +305,6 @@ Implemented:
 - Duplicate favorite prevention
 
 Completed: June 2026
-
-Next Step:
-
-- Shopping cart
 
 ---
 
@@ -312,9 +330,7 @@ Implemented:
 
 Completed: June 2026
 
-Next Step:
-
-- AI recommendation engine
+---
 
 ### Phase 5 - Chat Assistant ✅
 
@@ -328,9 +344,63 @@ Implemented:
 - 5 prompts limit per user
 - Chat endpoint
 - Error handling
+- Chat usage database table
+
+Completed: June 2026
+
+---
+
+### Phase 6 - Backend Finalization ✅
+
+Implemented:
+
+- User logout endpoint
+- Delete current user endpoint
+- Delete user related data
+- Available products endpoint
+- Backend requirements review
 
 Completed: June 2026
 
 Next Step:
 
 - Frontend integration
+
+---
+
+## Remaining Work
+
+### Frontend
+
+- User authentication screens
+- Product catalog page
+- Product details page
+- Favorites page
+- Shopping cart page
+- Orders page
+- AI assistant interface
+
+### Infrastructure
+
+- Redis caching
+- Docker support
+
+### Content
+
+- Add at least 10 products
+
+### Final Improvements
+
+- UI polishing
+- Additional validation
+- Edge case testing
+- Success and error notifications
+- Optional product update/delete improvements
+- Optional cart quantity controls
+
+### Bonus
+
+- Machine learning prediction model
+- Dedicated forecast API
+- Training dataset documentation
+- Forecast endpoint integration
