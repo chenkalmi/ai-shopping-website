@@ -73,3 +73,13 @@ def search_products(
 def get_products(db: Session = Depends(get_db)):
     products = db.query(Product).all()
     return products
+
+@router.get("/available")
+def get_available_products(db: Session = Depends(get_db)):
+    products = (
+        db.query(Product)
+        .filter(Product.stock > 0)
+        .all()
+    )
+
+    return products

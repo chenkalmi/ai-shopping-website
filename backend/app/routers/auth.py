@@ -4,8 +4,17 @@ from sqlalchemy.orm import Session
 
 from backend.app.database.connection import get_db
 from backend.app.models.user import User
+from backend.app.models.favorite import Favorite
+from backend.app.models.chat_usage import ChatUsage
+from backend.app.models.order import Order
+from backend.app.models.order_item import OrderItem
+
 from backend.app.schemas.user import UserCreate, UserLogin
-from backend.app.services.security import hash_password, verify_password, create_access_token
+from backend.app.services.security import (
+    hash_password,
+    verify_password,
+    create_access_token
+)
 from backend.app.services.auth_service import get_current_user
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
@@ -66,6 +75,10 @@ def login(
         "token_type": "bearer"
     }
 
+@router.post("/logout")
+def logout(current_user: User = Depends(get_current_user)):
+    return {"message": "Logged out successfully"}
+
 @router.get("/me")
 def get_me(current_user: User = Depends(get_current_user)):
     return {
@@ -73,3 +86,34 @@ def get_me(current_user: User = Depends(get_current_user)):
         "username": current_user.username,
         "email": current_user.email
     }
+
+@router.delete("/me")
+def delete_current_user(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    db.query(Favorite).filter(
+        Favorite.user_id == current_user.id
+    ).delete()
+
+    db.query(ChatUsage).filter(
+        ChatUsage.user_id == current_user.id
+    ).delete()
+
+    user_orders = db.query(Order).filter(
+        Order.user_id == current_user.id
+    ).all()
+
+    for order in user_orders:
+        db.query(OrderItem).filter(
+            OrderItem.order_id == order.id
+        ).delete()
+
+    db.query(Order).filter(
+        Order.user_id == current_user.id
+    ).delete()
+
+    db.delete(current_user)
+    db.commit()
+
+    return {"message": "User account deleted successfully"}
