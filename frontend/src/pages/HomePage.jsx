@@ -3,7 +3,7 @@ import ProductCard from '../components/ProductCard'
 import {
   getAvailableProducts,
   searchProductsApi
-} from '../services/api'
+} from '../services/productsApi'
 
 function HomePage() {
   const [products, setProducts] = useState([])

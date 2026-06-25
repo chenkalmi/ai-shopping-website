@@ -5,6 +5,8 @@ from backend.app.routers.products import router as products_router
 from backend.app.routers.favorites import router as favorites_router
 from backend.app.routers.orders import router as orders_router
 from backend.app.routers.chat import router as chat_router
+from backend.app.routers.manager import router as manager_router
+
 
 app = FastAPI(title="AI Shopping Website")
 
@@ -30,6 +32,8 @@ app.include_router(favorites_router)
 app.include_router(orders_router)
 
 app.include_router(chat_router)
+
+app.include_router(manager_router)
 
 @app.get("/")
 def root():

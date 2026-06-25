@@ -2,16 +2,6 @@ import axios from 'axios'
 
 const API_BASE_URL = 'http://127.0.0.1:8000'
 
-export function getAvailableProducts() {
-  return axios.get(`${API_BASE_URL}/products/available`)
-}
-
-export function searchProductsApi(params) {
-  return axios.get(`${API_BASE_URL}/products/search`, {
-    params: params
-  })
-}
-
 export function loginApi(username, password) {
   const formData = new URLSearchParams()
   formData.append('username', username)
@@ -22,4 +12,8 @@ export function loginApi(username, password) {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
   })
+}
+
+export function registerApi(userData) {
+  return axios.post(`${API_BASE_URL}/auth/register`, userData)
 }

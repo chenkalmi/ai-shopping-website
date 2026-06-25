@@ -27,12 +27,6 @@ def add_item_to_temp_order(
             detail="Product not found"
         )
 
-    if product.stock < item.quantity:
-        raise HTTPException(
-            status_code=400,
-            detail="Not enough stock"
-        )
-
     temp_order = db.query(Order).filter(
         Order.user_id == current_user.id,
         Order.status == "TEMP"
@@ -53,8 +47,22 @@ def add_item_to_temp_order(
     ).first()
 
     if existing_item:
-        existing_item.quantity += item.quantity
+        new_quantity = existing_item.quantity + item.quantity
+
+        if new_quantity > product.stock:
+            raise HTTPException(
+                status_code=400,
+                detail="Not enough stock available"
+            )
+
+        existing_item.quantity = new_quantity
     else:
+        if item.quantity > product.stock:
+            raise HTTPException(
+                status_code=400,
+                detail="Not enough stock available"
+            )
+
         new_item = OrderItem(
             order_id=temp_order.id,
             product_id=item.product_id,
@@ -193,7 +201,13 @@ def purchase_order(
             Product.id == item.product_id
         ).first()
 
-        if product.stock < item.quantity:
+        if not product:
+            raise HTTPException(
+                status_code=404,
+                detail="Product not found"
+            )
+
+        if item.quantity > product.stock:
             raise HTTPException(
                 status_code=400,
                 detail=f"Not enough stock for {product.name}"
@@ -213,11 +227,14 @@ def purchase_order(
     temp_order.status = "CLOSED"
 
     db.commit()
+    db.refresh(temp_order)
 
     return {
         "message": "Order purchased successfully",
         "order_id": temp_order.id,
-        "total_price": total_price
+        "total_price": temp_order.total_price,
+        "shipping_address": temp_order.shipping_address,
+        "status": temp_order.status
     }
 
 @router.get("/")

@@ -410,6 +410,43 @@ Next Step:
 - Orders page
 - Chat assistant page
 
+---
+
+### Phase 8 - User Features ✅
+
+Implemented:
+
+- User registration page
+- Separate Login and Register pages
+- Account menu with authentication state
+- Logout functionality
+- Friendly authentication error messages
+- Favorites management
+- Add products to cart from Home and Favorites
+- Dedicated Shopping Cart page
+- Remove products from cart
+- Purchase flow with shipping address
+- Dedicated Order History page
+- View order details
+- Display purchased products
+- Display shipping address and total price
+
+---
+
+### Phase 9 - Backend Improvements ✅
+
+Implemented:
+
+- Split frontend API into feature-based services
+- Stock validation when adding items to cart
+- Stock validation before purchase
+- Prevent purchasing unavailable products
+- Improved backend error handling
+- Chat page connected to AI backend
+- Started Manager module for future admin panel
+
+---
+
 ## Remaining Work
 
 ### Frontend
