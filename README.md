@@ -1,6 +1,6 @@
 # AI Shopping Website
 
-AI Shopping Website is a full-stack e-commerce platform built with **FastAPI**, **React**, **MySQL**, and **OpenAI**.
+AI Shopping Website is a full-stack e-commerce platform built with **FastAPI**, **React**, **MySQL**, **Redis** and **OpenAI**.
 
 The project provides complete user authentication, product management, shopping cart, favorites, order management, an AI shopping assistant, and an administrator dashboard.
 
@@ -113,13 +113,25 @@ Supports searching by:
 
 ---
 
-## AI Shopping Assistant
+## Chat Assistant
 
 - OpenAI integration
 - Product-aware responses
 - Prompt tracking
 - Maximum 5 prompts per user
 - Authentication required
+
+---
+
+### Redis Caching
+
+- Redis cache integration
+- Cache available products
+- Automatic cache invalidation after product updates
+- Automatic cache invalidation after product deletion
+- Automatic cache invalidation after successful purchases
+- Fallback to MySQL when cache is empty
+- Automatic cache refresh after cache miss
 
 ---
 
@@ -192,6 +204,8 @@ Removed products:
 - SQLAlchemy
 - Pydantic
 - MySQL
+- Redis
+- redis-py
 - Passlib (bcrypt)
 - python-jose
 - OAuth2PasswordBearer
@@ -709,6 +723,24 @@ Implemented:
 Completed: June 2026
 
 ---
+
+### Phase 10 – Redis Integration ✅
+
+Implemented:
+
+- Redis server integration
+- Redis service layer
+- Cache available products endpoint
+- Automatic cache invalidation after product creation
+- Automatic cache invalidation after product updates
+- Automatic cache invalidation after product removal
+- Automatic cache invalidation after purchases
+- Automatic cache refresh from MySQL
+
+Completed: June 2026
+
+---
+
 
 # Remaining Work
 

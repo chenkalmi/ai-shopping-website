@@ -5,6 +5,7 @@ from typing import Optional
 
 from backend.app.database.connection import get_db
 from backend.app.models.product import Product
+from backend.app.services.redis_service import get_cache, set_cache, delete_cache
 
 
 router = APIRouter(prefix="/products", tags=["Products"])
@@ -56,10 +57,29 @@ def get_products(db: Session = Depends(get_db)):
 
 @router.get("/available")
 def get_available_products(db: Session = Depends(get_db)):
+    cached_products = get_cache("available_products")
+
+    if cached_products is not None:
+        return cached_products
+    
     products = (
         db.query(Product)
         .filter(Product.stock > 0, Product.is_active == True)
         .all()
     )
 
-    return products
+    products_data = []
+
+    for product in products:
+        products_data.append({
+            "id": product.id,
+            "name": product.name,
+            "price": product.price,
+            "stock": product.stock,
+            "is_active": product.is_active,
+            "image_url": product.image_url
+        })
+
+    set_cache("available_products", products_data)
+
+    return products_data

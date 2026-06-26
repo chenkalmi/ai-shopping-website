@@ -4,6 +4,7 @@ import os
 import shutil
 from fastapi import UploadFile, File
 
+from backend.app.services.redis_service import delete_cache
 from backend.app.database.connection import get_db
 from backend.app.models.product import Product
 from backend.app.models.user import User
@@ -55,6 +56,8 @@ def create_product(
     db.commit()
     db.refresh(new_product)
 
+    delete_cache("available_products")
+
     return {
         "message": "Product created successfully",
         "product_id": new_product.id,
@@ -98,6 +101,8 @@ def update_product(
     db.commit()
     db.refresh(product)
 
+    delete_cache("available_products")
+
     return {
         "message": "Product updated successfully",
         "product_id": product.id,
@@ -123,6 +128,8 @@ def delete_product(
 
     db.commit()
     db.refresh(product)
+
+    delete_cache("available_products")
 
     return {
         "message": "Product removed from store",

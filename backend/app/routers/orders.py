@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from backend.app.services.redis_service import delete_cache
 from backend.app.database.connection import get_db
 from backend.app.models.order import Order
 from backend.app.models.order_item import OrderItem
@@ -241,6 +242,8 @@ def purchase_order(
 
     db.commit()
     db.refresh(temp_order)
+
+    delete_cache("available_products")
 
     return {
         "message": "Order purchased successfully",
