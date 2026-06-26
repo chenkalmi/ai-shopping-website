@@ -5,7 +5,7 @@ from typing import Optional
 
 from backend.app.database.connection import get_db
 from backend.app.models.product import Product
-from backend.app.schemas.product import ProductCreate
+
 
 router = APIRouter(prefix="/products", tags=["Products"])
 
@@ -19,7 +19,7 @@ def search_products(
     stock_value: Optional[int] = None,
     db: Session = Depends(get_db)
 ):
-    query = db.query(Product)
+    query = db.query(Product).filter(Product.is_active == True)
 
     if name:
         words = name.split()
@@ -51,14 +51,14 @@ def search_products(
 
 @router.get("/")
 def get_products(db: Session = Depends(get_db)):
-    products = db.query(Product).all()
+    products = db.query(Product).filter(Product.is_active == True).all()
     return products
 
 @router.get("/available")
 def get_available_products(db: Session = Depends(get_db)):
     products = (
         db.query(Product)
-        .filter(Product.stock > 0)
+        .filter(Product.stock > 0, Product.is_active == True)
         .all()
     )
 

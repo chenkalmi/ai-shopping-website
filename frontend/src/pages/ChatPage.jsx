@@ -8,7 +8,7 @@ function ChatPage() {
   function sendMessage() {
     sendChatMessageApi(message)
       .then((response) => {
-        setResponse(response.data.response)
+        setResponse(response.data.assistant_answer)
       })
       .catch((error) => {
         console.error('Error sending message:', error)

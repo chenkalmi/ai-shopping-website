@@ -26,6 +26,12 @@ def add_item_to_temp_order(
             status_code=404,
             detail="Product not found"
         )
+    
+    if not product.is_active:
+        raise HTTPException(
+            status_code=400,
+            detail="Product is no longer available"
+        )
 
     temp_order = db.query(Order).filter(
         Order.user_id == current_user.id,
@@ -114,7 +120,9 @@ def get_temp_order(
                 "name": product.name,
                 "price": item.price_at_purchase,
                 "quantity": item.quantity,
-                "subtotal": item.price_at_purchase * item.quantity
+                "subtotal": item.price_at_purchase * item.quantity,
+                "is_active": product.is_active,
+                "image_url": product.image_url
             })
 
     return {
@@ -166,7 +174,6 @@ def remove_item_from_temp_order(
     return {
         "message": "Product removed from order"
     }
-
 @router.post("/purchase")
 def purchase_order(
     order_data: OrderPurchase,
@@ -205,6 +212,12 @@ def purchase_order(
             raise HTTPException(
                 status_code=404,
                 detail="Product not found"
+            )
+
+        if not product.is_active:
+            raise HTTPException(
+                status_code=400,
+                detail=f"{product.name} is no longer available"
             )
 
         if item.quantity > product.stock:
@@ -254,7 +267,7 @@ def get_orders(
             "order_id": order.id,
             "order_date": order.order_date,
             "total_price": order.total_price,
-            "status": order.status
+            "status": order.status, 
         })
 
     return result
@@ -293,7 +306,9 @@ def get_order_details(
                 "name": product.name,
                 "price": item.price_at_purchase,
                 "quantity": item.quantity,
-                "subtotal": item.price_at_purchase * item.quantity
+                "subtotal": item.price_at_purchase * item.quantity,
+                "is_active": product.is_active,
+                "image_url": product.image_url
             })
 
     return {

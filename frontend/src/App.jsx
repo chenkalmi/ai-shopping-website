@@ -8,6 +8,7 @@ import OrdersPage from './pages/OrdersPage'
 import ChatPage from './pages/ChatPage'
 import RegisterPage from './pages/RegisterPage'
 import CartPage from './pages/CartPage'
+import AdminProductsPage from './pages/AdminProductsPage'
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/orders" element={<OrdersPage />} />
         <Route path="/chat" element={<ChatPage />} />
+        <Route path="/admin/products" element={<AdminProductsPage />} />
       </Routes>
     </BrowserRouter>
   )

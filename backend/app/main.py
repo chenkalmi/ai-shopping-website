@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from backend.app.routers.auth import router as auth_router
 from backend.app.routers.products import router as products_router
@@ -9,7 +10,7 @@ from backend.app.routers.manager import router as manager_router
 
 
 app = FastAPI(title="AI Shopping Website")
-
+app.mount("/uploads", StaticFiles(directory="backend/uploads"), name="uploads")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[

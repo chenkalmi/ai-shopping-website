@@ -37,25 +37,41 @@ function ProductCard({ product, showFavoriteButton = true, showCartButton = true
 
   return (
     <div>
-      <h3>{product.name}</h3>
-      <p>Price: {product.price}</p>
-      <p>Stock: {product.stock}</p>
+        {product.image_url && (
+      <img
+        src={
+            product.image_url.startsWith('http')
+            ? product.image_url
+            : `http://127.0.0.1:8000${product.image_url}`
+        }
+        alt={product.name}
+        style={{
+            width: '160px',
+            height: '160px',
+            objectFit: 'cover'
+        }}
+       />
+        )}
 
-      {showFavoriteButton && (
+        <h3>{product.name}</h3>
+        <p>Price: {product.price}</p>
+        <p>Stock: {product.stock}</p>
+
+        {showFavoriteButton && (
         <button type="button" onClick={addToFavorites}>
-          ❤️ Add to Favorites
+            ❤️ Add to Favorites
         </button>
-      )}
+        )}
 
-      {showCartButton && (
+        {showCartButton && (
         <button type="button" onClick={addToCart}>
-          🛒 Add to Cart
+            🛒 Add to Cart
         </button>
-      )}
+        )}
 
-      <p>{message}</p>
+        <p>{message}</p>
     </div>
-  )
+    )
 }
 
 export default ProductCard

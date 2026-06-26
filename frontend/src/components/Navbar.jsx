@@ -1,10 +1,26 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { getCurrentUserApi } from '../services/authApi'
 
 function Navbar() {
   const [showMenu, setShowMenu] = useState(false)
   const navigate = useNavigate()
   const token = localStorage.getItem('token')
+  const [currentUser, setCurrentUser] = useState(null)
+
+    useEffect(() => {
+    if (token) {
+        getCurrentUserApi()
+        .then((response) => {
+            setCurrentUser(response.data)
+        })
+        .catch(() => {
+            setCurrentUser(null)
+        })
+    } else {
+        setCurrentUser(null)
+    }
+    }, [token])
 
   function logout() {
     localStorage.removeItem('token')
@@ -76,6 +92,16 @@ function Navbar() {
               </Link>
 
               <br />
+
+              {currentUser?.is_admin && (
+                <>
+                    <Link to="/admin/products" onClick={() => setShowMenu(false)}>
+                    🛠️ Admin Products
+                    </Link>
+
+                    <br />
+                </>
+               )}
 
               <button type="button" onClick={logout}>
                 🚪 Logout

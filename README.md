@@ -1,100 +1,191 @@
 # AI Shopping Website
 
-AI shopping website built with FastAPI, MySQL and ChatGPT integration.
+AI Shopping Website is a full-stack e-commerce platform built with **FastAPI**, **React**, **MySQL**, and **OpenAI**.
 
-## Overview
-
-AI Shopping Website is a full-stack shopping platform currently under development.
-
-The project is built with FastAPI, MySQL and SQLAlchemy and is designed to support user management, product management and AI-based shopping recommendations.
+The project provides complete user authentication, product management, shopping cart, favorites, order management, an AI shopping assistant, and an administrator dashboard.
 
 ---
 
-## Features Implemented
+# Overview
 
-### User Registration
+The system consists of two main parts:
 
-- Create new user accounts
+- **Backend** built with FastAPI and SQLAlchemy
+- **Frontend** built with React and Vite
+
+The platform supports:
+
+- User registration and authentication
+- JWT authorization
+- Product management
+- Product search
+- Favorites
+- Shopping cart
+- Orders
+- AI shopping assistant
+- Administrator panel
+- Product image upload
+- Soft delete products
+
+---
+
+# Features Implemented
+
+## User Registration
+
+- Create new users
 - Email validation
-- Password length validation
-- Unique username validation
-- Unique email validation
+- Username validation
+- Password validation
 - Password hashing using bcrypt
-- Store users in MySQL database
+- Store users in MySQL
 
-### User Login and Authentication
+---
 
-- Login using username and password
-- Verify password against stored hash
-- Return JWT access token after successful login
-- Return error response for invalid credentials
-- Token expiration support
-- Decode and validate JWT tokens
-- Protected routes using authentication
-- Retrieve current authenticated user
-- Swagger authorization support
-- User logout
-- Delete current user account
+## Authentication
 
-### Product Management
+- Login with username and password
+- JWT authentication
+- Token validation
+- Current authenticated user endpoint
+- Swagger authorization
+- Logout
+- Delete current account
+- Admin authorization support
 
-- Create new products
-- Store products in MySQL database
+---
+
+## Products
+
+- Create products
+- Update products
+- Soft delete products
 - Retrieve all products
 - Retrieve available products only
-
-### Product Search
-
-- Search products by name
-- Multi-word search support
-- Search by price (<, >, =)
-- Search by stock (<, >, =)
-- Combine multiple filters
-- Return error when no products are found
-
-### Favorites System
-
-- Add products to favorites
-- Remove products from favorites
-- View favorite products
-- Prevent duplicate favorites
-- Favorites persist in database
-- Favorites available only for authenticated users
-
-### Orders Management
-
-- Create temporary orders automatically
-- Add products to temporary orders
-- Prevent ordering more items than available stock
-- View current temporary order
-- Remove products from temporary order
-- Automatically delete empty temporary orders
-- Purchase orders
-- Update product stock after purchase
-- Save shipping address
-- Calculate total order price
-- Convert temporary orders to closed orders
-- View order history
-- View order details
-- Orders persist in database
-- Orders available only for authenticated users
-
-### Chat Assistant
-
-- ChatGPT-powered shopping assistant
-- Authenticated users only
-- Product-aware responses
-- Available and out-of-stock product awareness
-- Prompt usage tracking
-- Maximum 5 prompts per user
-- OpenAI API integration
-- OpenAI quota error handling
+- Search products
+- Product image support
+- Product availability tracking
 
 ---
 
-## Technologies
+## Product Search
 
-### Backend
+Supports searching by:
+
+- Product name
+- Maximum price
+- Minimum stock
+- Multiple filters together
+
+---
+
+## Favorites
+
+- Add favorite
+- Remove favorite
+- View favorites
+- Duplicate prevention
+- Authentication required
+
+---
+
+## Shopping Cart
+
+- Temporary cart
+- Add products
+- Remove products
+- Automatic cart creation
+- Purchase cart
+- Shipping address
+- Stock validation
+- Automatic total calculation
+
+---
+
+## Orders
+
+- Order history
+- Order details
+- Closed orders
+- Purchased prices
+- Product quantities
+- Shipping address
+
+---
+
+## AI Shopping Assistant
+
+- OpenAI integration
+- Product-aware responses
+- Prompt tracking
+- Maximum 5 prompts per user
+- Authentication required
+
+---
+
+## Administrator Panel
+
+Administrator users can:
+
+- View all products
+- Create products
+- Update products
+- Soft delete products
+- Upload product images
+- Replace existing images
+- View uploaded images immediately
+
+---
+
+## Product Images
+
+Implemented image upload support.
+
+Features:
+
+- Upload images from frontend
+- Store images inside backend/uploads
+- Save image path inside database
+- Display images throughout the website
+- Serve uploaded images using FastAPI StaticFiles
+
+Images are displayed in:
+
+- Home page
+- Favorites
+- Shopping cart
+- Order details
+- Administrator panel
+
+---
+
+## Soft Delete
+
+Products are never physically removed from the database.
+
+Instead:
+
+- `is_active = False`
+
+This allows:
+
+- Old orders to remain valid
+- Favorites to remain consistent
+- Historical purchases to keep product information
+
+Removed products:
+
+- Cannot be purchased
+- Cannot be added to favorites
+- Cannot be added to cart
+- Are hidden from the public catalog
+- Are marked as unavailable inside existing carts and previous orders
+
+---
+
+# Technologies
+
+## Backend
 
 - Python
 - FastAPI
@@ -102,53 +193,140 @@ The project is built with FastAPI, MySQL and SQLAlchemy and is designed to suppo
 - Pydantic
 - MySQL
 - Passlib (bcrypt)
-- python-jose (JWT)
+- python-jose
 - OAuth2PasswordBearer
-- python-multipart
-- OpenAI API
-- OpenAI Python SDK
 - python-dotenv
+- python-multipart
+- OpenAI SDK
 
-### Frontend
+## Frontend
 
 - React
 - Vite
+- React Router
 - Axios
-- React Router DOM
 - JavaScript
 - CSS
 
-### Database
+## Database
 
 - MySQL
 
 ---
 
-## Project Structure
+# Project Structure
 
 backend/
+
 ├── app/
+
 │   ├── database/
+
 │   ├── models/
+
+│   │   ├── user.py
+
+│   │   ├── product.py
+
+│   │   ├── favorite.py
+
+│   │   ├── order.py
+
+│   │   └── chat_usage.py
+
+│
+
 │   ├── routers/
+
+│   │   ├── auth.py
+
+│   │   ├── products.py
+
+│   │   ├── favorites.py
+
+│   │   ├── orders.py
+
+│   │   ├── chat.py
+
+│   │   └── manager.py
+
+│
+
 │   ├── schemas/
+
+│
+
 │   ├── services/
+
+│
+
 │   └── main.py
 
+│
+
+├── uploads/
+
+│
+
+└── requirements.txt
 
 frontend/
+
 ├── src/
+
 │   ├── components/
+
+│   │   ├── Navbar.jsx
+
+│   │   └── ProductCard.jsx
+
+│
+
 │   ├── pages/
+
+│   │   ├── HomePage.jsx
+
+│   │   ├── LoginPage.jsx
+
+│   │   ├── RegisterPage.jsx
+
+│   │   ├── FavoritesPage.jsx
+
+│   │   ├── CartPage.jsx
+
+│   │   ├── OrdersPage.jsx
+
+│   │   ├── ChatPage.jsx
+
+│   │   └── AdminProductsPage.jsx
+
+│
+
 │   ├── services/
+
+│   │   ├── authApi.js
+
+│   │   ├── productsApi.js
+
+│   │   ├── favoritesApi.js
+
+│   │   ├── ordersApi.js
+
+│   │   ├── chatApi.js
+
+│   │   └── managerApi.js
+
+│
+
 │   ├── App.jsx
+
+│
+
 │   └── main.jsx
 
----
+# API Endpoints
 
-## API Endpoints
-
-### Authentication
+## Authentication
 
 POST /auth/register
 
@@ -160,9 +338,9 @@ POST /auth/logout
 
 DELETE /auth/me
 
-### Products
+---
 
-POST /products
+## Products
 
 GET /products
 
@@ -170,7 +348,9 @@ GET /products/search
 
 GET /products/available
 
-### Favorites
+---
+
+## Favorites
 
 POST /favorites
 
@@ -178,7 +358,9 @@ GET /favorites
 
 DELETE /favorites/{product_id}
 
-### Orders
+---
+
+## Orders
 
 POST /orders/items
 
@@ -192,15 +374,31 @@ GET /orders
 
 GET /orders/{order_id}
 
-### Chat
+---
+
+## Chat
 
 POST /chat
 
 ---
 
-## Database
+## Manager
 
-### Users Table
+GET /manager/products
+
+POST /manager/products
+
+PUT /manager/products/{product_id}
+
+DELETE /manager/products/{product_id}
+
+POST /manager/upload-image
+
+---
+
+# Database
+
+## Users Table
 
 Fields:
 
@@ -213,8 +411,11 @@ Fields:
 - city
 - username
 - password_hash
+- is_admin
 
-### Products Table
+---
+
+## Products Table
 
 Fields:
 
@@ -222,8 +423,12 @@ Fields:
 - name
 - price
 - stock
+- is_active
+- image_url
 
-### Favorites Table
+---
+
+## Favorites Table
 
 Fields:
 
@@ -231,7 +436,9 @@ Fields:
 - user_id
 - product_id
 
-### Orders Table
+---
+
+## Orders Table
 
 Fields:
 
@@ -242,7 +449,9 @@ Fields:
 - total_price
 - status (TEMP / CLOSED)
 
-### Order Items Table
+---
+
+## Order Items Table
 
 Fields:
 
@@ -252,7 +461,9 @@ Fields:
 - quantity
 - price_at_purchase
 
-### Chat Usage Table
+---
+
+## Chat Usage Table
 
 Fields:
 
@@ -262,109 +473,94 @@ Fields:
 
 ---
 
-## Development Progress
+# Development Progress
 
-### Phase 1 - User Management ✅
+## Phase 1 – User Management ✅
 
 Implemented:
 
 - Database connection
 - Users table
 - User registration API
-- User login API
-- Password hashing with bcrypt
-- Swagger testing
+- Login API
+- Password hashing
+- JWT authentication
+- Swagger authorization
+- Logout
+- Delete account
 
 Completed: June 2026
 
 ---
 
-### Phase 2 - Product Management ✅
+## Phase 2 – Product Management ✅
 
 Implemented:
 
 - Products table
 - Product model
 - Product schema
-- Product creation API
-- Product listing API
-- Product search API
-- Search by name
-- Search by price
-- Search by stock
-- Multi-word search support
-- Available products endpoint
+- Product creation
+- Product retrieval
+- Product search
+- Product availability endpoint
 
 Completed: June 2026
 
 ---
 
-### Phase 3 - Authentication & Favorites ✅
+## Phase 3 – Favorites & Authentication ✅
 
 Implemented:
 
-- JWT access token creation
-- Token expiration
-- JWT decoding and validation
-- Current user authentication
-- Protected route example with /auth/me
-- Swagger authorization integration
-- OAuth2 password form login support
-- User logout
-- Delete current user account
 - Favorites table
 - Add favorite
 - Remove favorite
 - View favorites
-- Duplicate favorite prevention
+- Duplicate prevention
+- Protected endpoints
+- Current authenticated user endpoint
 
 Completed: June 2026
 
 ---
 
-### Phase 4 - Orders Management ✅
+## Phase 4 – Orders ✅
 
 Implemented:
 
-- Orders table
-- Order items table
-- Temporary order creation
-- Add products to temporary orders
-- Remove products from temporary orders
-- View temporary order
-- Purchase order
-- Shipping address support
-- Stock validation
-- Stock update after purchase
-- Automatic total price calculation
+- Temporary orders
+- Shopping cart
+- Add products
+- Remove products
+- Purchase orders
+- Shipping address
 - Order history
 - Order details
-- Automatic deletion of empty temporary orders
-- Closed and temporary order status support
+- Stock update after purchase
+- Automatic total price calculation
+- Automatic removal of empty carts
 
 Completed: June 2026
 
 ---
 
-### Phase 5 - Chat Assistant ✅
+## Phase 5 – AI Assistant ✅
 
 Implemented:
 
 - OpenAI integration
-- Chat request schema
-- Chat service
-- Product context generation
-- Prompt usage tracking
-- 5 prompts limit per user
+- Product-aware assistant
+- Prompt tracking
+- Prompt limitation
 - Chat endpoint
 - Error handling
-- Chat usage database table
 
 Completed: June 2026
 
 ---
 
-### Phase 6 - Backend Finalization ✅
+## Phase 6 - Backend Finalization ✅
 
 Implemented:
 
@@ -376,13 +572,9 @@ Implemented:
 
 Completed: June 2026
 
-Next Step:
-
-- Frontend integration
-
 ---
 
-### Phase 7 - Frontend Foundation ✅
+## Phase 7 - Frontend Foundation ✅
 
 Implemented:
 
@@ -412,7 +604,7 @@ Next Step:
 
 ---
 
-### Phase 8 - User Features ✅
+## Phase 8 - User Features ✅
 
 Implemented:
 
@@ -430,57 +622,127 @@ Implemented:
 - View order details
 - Display purchased products
 - Display shipping address and total price
+- AI Shopping Assistant page
+- Feature-based frontend API services
+
+Completed: June 2026
+
+Next Step:
+
+- Administrator panel
 
 ---
 
-### Phase 9 - Backend Improvements ✅
+## Phase 9 - Backend Improvements ✅
 
 Implemented:
 
-- Split frontend API into feature-based services
-- Stock validation when adding items to cart
+- Backend validation improvements
+- Better error handling
+- Stock validation when adding products to cart
 - Stock validation before purchase
 - Prevent purchasing unavailable products
-- Improved backend error handling
-- Chat page connected to AI backend
-- Started Manager module for future admin panel
+- Chat assistant connected to OpenAI backend
+- Product-aware AI responses
+- Prompt usage tracking
+- Five prompt limit per user
+
+Completed: June 2026
+
+Next Step:
+
+- Administrator module
+- Product image upload
 
 ---
 
-## Remaining Work
+## Phase 10 - Administrator Panel & Product Images ✅
 
-### Frontend
+Implemented:
 
-### Frontend
+### Administrator
 
-- Favorites page
-- Shopping cart page
-- Orders page
-- AI assistant interface
-- Register option inside login page
-- Logout UI improvements
+- Admin-only authorization
+- Manager router
+- Administrator dashboard
+- Create products
+- Update products
+- Soft delete products
+- View all products
 
-### Infrastructure
+### Product Images
 
-- Redis caching
+- Image upload endpoint
+- Upload images from frontend
+- Store uploaded files inside `backend/uploads`
+- Save image path in `image_url`
+- FastAPI static image serving
+- Display images throughout the application
+
+### Product Availability
+
+- Added `is_active` field to products
+- Soft delete implementation
+- Removed products remain in database
+- Existing orders continue displaying removed products
+- Existing favorites continue displaying removed products
+- Existing carts continue displaying removed products
+- Removed products are marked as unavailable
+- Prevent adding removed products to favorites
+- Prevent adding removed products to cart
+- Prevent purchasing removed products
+- Chat assistant ignores removed products
+
+### Frontend Updates
+
+- Administrator page
+- Product image preview
+- Product image upload
+- Product image replacement
+- Images displayed on:
+  - Home page
+  - Favorites
+  - Shopping cart
+  - Order history
+  - Administrator dashboard
+
+Completed: June 2026
+
+---
+
+# Remaining Work
+
+## Infrastructure
+
+- Redis integration
 - Docker support
 
-### Content
+## Content
 
 - Add at least 10 products
 
-### Final Improvements
+## Final Improvements
 
-- UI polishing
+- Improve UI/UX
+- Responsive design
+- Better styling
 - Additional validation
 - Edge case testing
 - Success and error notifications
-- Optional product update/delete improvements
-- Optional cart quantity controls
+- Improve Administrator dashboard
+- Improve product cards
+- Improve navigation bar
 
-### Bonus
+---
 
-- Machine learning prediction model
-- Dedicated forecast API
-- Training dataset documentation
-- Forecast endpoint integration
+# Bonus
+
+Planned:
+
+- Machine Learning recommendation model
+- Product prediction API
+- Model training pipeline
+- Dataset documentation
+- Frontend integration for recommendations
+
+---

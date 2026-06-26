@@ -9,7 +9,7 @@ from backend.app.models.chat_usage import ChatUsage
 from backend.app.models.order import Order
 from backend.app.models.order_item import OrderItem
 
-from backend.app.schemas.user import UserCreate, UserLogin
+from backend.app.schemas.user import UserCreate
 from backend.app.services.security import (
     hash_password,
     verify_password,
@@ -84,7 +84,8 @@ def get_me(current_user: User = Depends(get_current_user)):
     return {
         "id": current_user.id,
         "username": current_user.username,
-        "email": current_user.email
+        "email": current_user.email,
+        "is_admin": current_user.is_admin
     }
 
 @router.delete("/me")

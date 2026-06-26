@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Boolean
 from backend.app.database.connection import Base
 
 
@@ -6,6 +6,8 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
+
+    is_admin = Column(Boolean, default=False)
 
     first_name = Column(String(100), nullable=False)
     last_name = Column(String(100), nullable=False)

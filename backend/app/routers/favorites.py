@@ -25,6 +25,12 @@ def add_favorite(
             status_code=404,
             detail="Product not found"
         )
+    
+    if not product.is_active:
+        raise HTTPException(
+            status_code=400,
+            detail="Product is no longer available"
+        )
 
     existing_favorite = db.query(Favorite).filter(
         Favorite.user_id == current_user.id,
@@ -74,7 +80,9 @@ def get_my_favorites(
                 "id": product.id,
                 "name": product.name,
                 "price": product.price,
-                "stock": product.stock
+                "stock": product.stock,
+                "is_active": product.is_active,
+                "image_url": product.image_url
             })
 
     return products

@@ -38,7 +38,7 @@ def chat_with_assistant(
             detail="You have reached the maximum number of chat prompts"
         )
 
-    products = db.query(Product).all()
+    products = db.query(Product).filter(Product.is_active == True).all()
 
     available_products = []
     out_of_stock_products = []

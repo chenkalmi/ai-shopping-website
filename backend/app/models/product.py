@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String, Float, Boolean
 from backend.app.database.connection import Base
 
 
@@ -9,3 +9,5 @@ class Product(Base):
     name = Column(String(255), nullable=False)
     price = Column(Float, nullable=False)
     stock = Column(Integer, nullable=False)
+    is_active = Column(Boolean, default=True)
+    image_url = Column(String(500), nullable=True)
