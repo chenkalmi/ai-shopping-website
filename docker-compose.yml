@@ -1,0 +1,48 @@
+services:
+  mysql:
+    image: mysql:9
+    container_name: ai_shopping_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ai_shopping_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  redis:
+    image: redis:latest
+    container_name: ai_shopping_redis
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: ai_shopping_backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+      - redis
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: mysql+pymysql://root:root@mysql:3306/ai_shopping_db
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+    
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: ai_shopping_frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
