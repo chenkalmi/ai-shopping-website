@@ -12,12 +12,32 @@ function getAuthHeaders() {
   }
 }
 
-export function sendChatMessageApi(message) {
+export function createConversationApi(message) {
   return axios.post(
-    `${API_BASE_URL}/chat/`,
-    {
-      message: message
-    },
+    `${API_BASE_URL}/chat/conversations`,
+    { message },
+    getAuthHeaders()
+  )
+}
+
+export function getConversationsApi() {
+  return axios.get(
+    `${API_BASE_URL}/chat/conversations`,
+    getAuthHeaders()
+  )
+}
+
+export function getConversationMessagesApi(conversationId) {
+  return axios.get(
+    `${API_BASE_URL}/chat/conversations/${conversationId}/messages`,
+    getAuthHeaders()
+  )
+}
+
+export function sendMessageToConversationApi(conversationId, message) {
+  return axios.post(
+    `${API_BASE_URL}/chat/conversations/${conversationId}/messages`,
+    { message },
     getAuthHeaders()
   )
 }

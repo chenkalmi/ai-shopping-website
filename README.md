@@ -117,10 +117,11 @@ Supports searching by:
 
 - OpenAI integration
 - Product-aware responses
+- Persistent conversations
+- Conversation history
 - Prompt tracking
 - Maximum 5 prompts per user
 - Authentication required
-
 ---
 
 ### Redis Caching
@@ -239,108 +240,77 @@ backend/
 ├── app/
 
 │   ├── database/
-
+│   │   ├── connection.py
+│   │   └── create_tables.py
+│
 │   ├── models/
-
 │   │   ├── user.py
-
 │   │   ├── product.py
-
 │   │   ├── favorite.py
-
 │   │   ├── order.py
-
-│   │   └── chat_usage.py
-
+│   │   ├── order_item.py
+│   │   ├── chat_usage.py
+│   │   ├── chat_conversation.py
+│   │   └── chat_message.py
 │
-
 │   ├── routers/
-
 │   │   ├── auth.py
-
 │   │   ├── products.py
-
 │   │   ├── favorites.py
-
 │   │   ├── orders.py
-
 │   │   ├── chat.py
-
 │   │   └── manager.py
-
 │
-
 │   ├── schemas/
-
+│   │   ├── auth.py
+│   │   ├── product.py
+│   │   ├── favorite.py
+│   │   ├── order.py
+│   │   └── chat.py
 │
-
 │   ├── services/
-
+│   │   ├── auth_service.py
+│   │   ├── chat_service.py
+│   │   ├── redis_service.py
+│   │   └── manager_service.py
 │
-
 │   └── main.py
-
 │
-
 ├── uploads/
-
 │
-
 └── requirements.txt
+
 
 frontend/
 
 ├── src/
-
-│   ├── components/
-
-│   │   ├── Navbar.jsx
-
-│   │   └── ProductCard.jsx
-
 │
-
-│   ├── pages/
-
-│   │   ├── HomePage.jsx
-
-│   │   ├── LoginPage.jsx
-
-│   │   ├── RegisterPage.jsx
-
-│   │   ├── FavoritesPage.jsx
-
-│   │   ├── CartPage.jsx
-
-│   │   ├── OrdersPage.jsx
-
-│   │   ├── ChatPage.jsx
-
-│   │   └── AdminProductsPage.jsx
-
+├── components/
+│   ├── Navbar.jsx
+│   ├── ProductCard.jsx
+│   └── *.css
 │
-
-│   ├── services/
-
-│   │   ├── authApi.js
-
-│   │   ├── productsApi.js
-
-│   │   ├── favoritesApi.js
-
-│   │   ├── ordersApi.js
-
-│   │   ├── chatApi.js
-
-│   │   └── managerApi.js
-
+├── pages/
+│   ├── HomePage.jsx
+│   ├── LoginPage.jsx
+│   ├── RegisterPage.jsx
+│   ├── FavoritesPage.jsx
+│   ├── CartPage.jsx
+│   ├── OrdersPage.jsx
+│   ├── ChatPage.jsx
+│   └── AdminProductsPage.jsx
 │
-
-│   ├── App.jsx
-
+├── services/
+│   ├── authApi.js
+│   ├── productsApi.js
+│   ├── favoritesApi.js
+│   ├── ordersApi.js
+│   ├── chatApi.js
+│   └── managerApi.js
 │
-
-│   └── main.jsx
+├── App.jsx
+│
+└── main.jsx
 
 # API Endpoints
 
@@ -396,7 +366,13 @@ GET /orders/{order_id}
 
 ## Chat
 
-POST /chat
+GET /chat/conversations
+
+POST /chat/conversations
+
+GET /chat/conversations/{conversation_id}/messages
+
+POST /chat/conversations/{conversation_id}/messages
 
 ---
 
@@ -490,6 +466,25 @@ Fields:
 - prompt_count
 
 ---
+
+## Chat Conversations Table
+
+Fields:
+
+- id
+- user_id
+- title
+
+---
+
+## Chat Messages Table
+
+Fields:
+
+- id
+- conversation_id
+- role
+- content
 
 # Development Progress
 
@@ -614,12 +609,6 @@ Implemented:
 
 Completed: June 2026
 
-Next Step:
-
-- Favorites page
-- Orders page
-- Chat assistant page
-
 ---
 
 ## Phase 8 - User Features ✅
@@ -645,10 +634,6 @@ Implemented:
 
 Completed: June 2026
 
-Next Step:
-
-- Administrator panel
-
 ---
 
 ## Phase 9 - Backend Improvements ✅
@@ -662,15 +647,16 @@ Implemented:
 - Prevent purchasing unavailable products
 - Chat assistant connected to OpenAI backend
 - Product-aware AI responses
+- Persistent conversations
+- Conversation history
+- Conversation titles
+- Conversation retrieval endpoints
+- Conversation message retrieval
+- Continue existing conversations
 - Prompt usage tracking
 - Five prompt limit per user
 
 Completed: June 2026
-
-Next Step:
-
-- Administrator module
-- Product image upload
 
 ---
 
@@ -718,17 +704,17 @@ Implemented:
 - Product image upload
 - Product image replacement
 - Images displayed on:
-  - Home page
-  - Favorites
-  - Shopping cart
-  - Order history
-  - Administrator dashboard
+- Home page
+- Favorites
+- Shopping cart
+- Order history
+- Administrator dashboard
 
 Completed: June 2026
 
 ---
 
-### Phase 10 – Redis Integration ✅
+### Phase 11 – Redis Integration ✅
 
 Implemented:
 
@@ -745,7 +731,7 @@ Completed: June 2026
 
 ---
 
-### Phase 11 – Docker Support ✅
+### Phase 12 – Docker Support ✅
 
 Implemented:
 
@@ -763,25 +749,35 @@ Completed: June 2026
 
 ---
 
-# Remaining Work
+### Phase 13 – Frontend UI & Chat Experience ✅
 
-## Content
+Implemented:
 
-- Add at least 10 products
+### UI Improvements
 
-## Final Improvements
+- Redesigned homepage
+- Redesigned navigation bar
+- Improved product cards
+- Modern shopping cart layout
+- Redesigned favorites page
+- Improved login and registration pages
+- Improved orders page
+- Redesigned administrator dashboard
+- Consistent styling across the application
 
-- Improve UI/UX
-- Responsive design
-- Better styling
-- Additional validation
-- Edge case testing
-- Success and error notifications
-- Improve Administrator dashboard
-- Improve product cards
-- Improve navigation bar
+### AI Assistant UI
+
+- Modern chat interface
+- Chat drawer in navigation bar
+- Conversation history drawer
+- Start new conversation
+- Conversation history integration
+- Chat layout similar to modern AI assistants
+
+Completed: June 2026
 
 ---
+
 
 # Bonus
 

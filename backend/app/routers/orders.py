@@ -7,7 +7,7 @@ from backend.app.models.order import Order
 from backend.app.models.order_item import OrderItem
 from backend.app.models.product import Product
 from backend.app.models.user import User
-from backend.app.schemas.order import OrderItemCreate, OrderPurchase
+from backend.app.schemas.order import OrderItemCreate, OrderItemUpdate, OrderPurchase
 from backend.app.services.auth_service import get_current_user
 
 
@@ -131,6 +131,66 @@ def get_temp_order(
         "status": temp_order.status,
         "items": items,
         "total_price": sum(item["subtotal"] for item in items)
+    }
+
+@router.put("/items/{product_id}")
+def update_item_quantity(
+    product_id: int,
+    item_update: OrderItemUpdate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    temp_order = db.query(Order).filter(
+        Order.user_id == current_user.id,
+        Order.status == "TEMP"
+    ).first()
+
+    if not temp_order:
+        raise HTTPException(
+            status_code=404,
+            detail="No active order"
+        )
+
+    order_item = db.query(OrderItem).filter(
+        OrderItem.order_id == temp_order.id,
+        OrderItem.product_id == product_id
+    ).first()
+
+    if not order_item:
+        raise HTTPException(
+            status_code=404,
+            detail="Product not found in order"
+        )
+
+    product = db.query(Product).filter(
+        Product.id == product_id
+    ).first()
+
+    if not product:
+        raise HTTPException(
+            status_code=404,
+            detail="Product not found"
+        )
+
+    if not product.is_active:
+        raise HTTPException(
+            status_code=400,
+            detail="Product is no longer available"
+        )
+
+    if item_update.quantity > product.stock:
+        raise HTTPException(
+            status_code=400,
+            detail="Not enough stock available"
+        )
+
+    order_item.quantity = item_update.quantity
+    db.commit()
+
+    return {
+        "message": "Item quantity updated successfully",
+        "product_id": product_id,
+        "quantity": order_item.quantity
     }
 
 @router.delete("/items/{product_id}")

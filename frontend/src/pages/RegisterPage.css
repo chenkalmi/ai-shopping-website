@@ -1,0 +1,79 @@
+.register-page {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f7f7f7;
+  padding: 40px;
+}
+
+.register-card {
+  width: 720px;
+  background: white;
+  border-radius: 18px;
+  padding: 45px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+.register-card h1 {
+  margin: 0;
+  text-align: center;
+  font-size: 34px;
+}
+
+.register-subtitle {
+  text-align: center;
+  color: #777;
+  margin: 12px 0 28px;
+}
+
+.register-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.register-grid input {
+  padding: 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.register-grid input:focus {
+  outline: none;
+  border-color: black;
+}
+
+.register-button {
+  width: 100%;
+  margin-top: 22px;
+  background: black;
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.register-message {
+  text-align: center;
+  margin-top: 16px;
+}
+
+.register-login-link {
+  text-align: center;
+  color: #777;
+  margin-top: 18px;
+}
+
+.register-login-link span {
+  color: black;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.register-login-link span:hover {
+  text-decoration: underline;
+}

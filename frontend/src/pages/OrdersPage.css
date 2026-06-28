@@ -1,0 +1,114 @@
+.orders-page {
+  max-width: 1100px;
+  margin: 45px auto 90px;
+  padding: 0 40px;
+}
+
+.orders-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 56px;
+  letter-spacing: 2px;
+  color: #555;
+  text-align: center;
+  margin: 0 0 45px;
+}
+
+.orders-message,
+.orders-empty {
+  text-align: center;
+  color: #777;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.order-card {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 26px rgba(0,0,0,0.06);
+}
+
+.order-summary {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 24px;
+}
+
+.order-summary h2 {
+  margin: 0 0 6px;
+  font-size: 24px;
+}
+
+.order-status {
+  color: #777;
+  margin: 0;
+}
+
+.order-price {
+  font-weight: 700;
+  font-size: 22px;
+}
+
+.order-details-btn {
+  border: none;
+  background: #111;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.order-details {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #eee;
+}
+
+.order-details-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  color: #555;
+  margin-bottom: 22px;
+}
+
+.order-items {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.order-item {
+  display: grid;
+  grid-template-columns: 95px 1fr;
+  gap: 18px;
+  align-items: center;
+}
+
+.order-item img {
+  width: 95px;
+  height: 95px;
+  object-fit: cover;
+  background: #f4f4f4;
+  border-radius: 10px;
+}
+
+.order-item-info h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.order-item-info p {
+  margin: 4px 0;
+  color: #666;
+}
+
+.inactive-product {
+  color: #b00020 !important;
+}

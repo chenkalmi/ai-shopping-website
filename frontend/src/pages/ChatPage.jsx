@@ -1,49 +1,146 @@
-import { useState } from 'react'
-import { sendChatMessageApi } from '../services/chatApi'
+import './ChatPage.css'
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import {
+  createConversationApi,
+  sendMessageToConversationApi,
+  getConversationMessagesApi
+} from '../services/chatApi'
 
 function ChatPage() {
-  const [message, setMessage] = useState('')
-  const [response, setResponse] = useState('')
+  const [inputMessage, setInputMessage] = useState('')
+  const [messages, setMessages] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [conversationId, setConversationId] = useState(null)
 
-  function sendMessage() {
-    sendChatMessageApi(message)
+  const [searchParams] = useSearchParams()
+
+  useEffect(() => {
+    const id = searchParams.get('conversationId')
+
+    if (!id) {
+      setConversationId(null)
+      setMessages([])
+      return
+    }
+
+    setConversationId(Number(id))
+
+    getConversationMessagesApi(id)
       .then((response) => {
-        setResponse(response.data.assistant_answer)
+        const loadedMessages = response.data.map((message) => ({
+          id: message.id,
+          sender: message.role,
+          text: message.content
+        }))
+
+        setMessages(loadedMessages)
       })
       .catch((error) => {
-        console.error('Error sending message:', error)
-        setResponse(
-          error.response?.data?.detail || 'Could not send message'
-        )
+        console.error('Error loading conversation messages:', error)
+      })
+  }, [searchParams])
+
+  function sendMessage() {
+    if (!inputMessage.trim()) return
+
+    const textToSend = inputMessage
+
+    const userMessage = {
+      id: Date.now(),
+      sender: 'user',
+      text: textToSend
+    }
+
+    setMessages((prev) => [...prev, userMessage])
+    setInputMessage('')
+    setLoading(true)
+
+    const request = conversationId
+      ? sendMessageToConversationApi(conversationId, textToSend)
+      : createConversationApi(textToSend)
+
+    request
+      .then((response) => {
+        if (!conversationId && response.data.conversation_id) {
+          setConversationId(response.data.conversation_id)
+          window.dispatchEvent(new Event('chatHistoryUpdated'))
+        }
+
+        const assistantMessage = {
+          id: Date.now() + 1,
+          sender: 'assistant',
+          text: response.data.assistant_answer
+        }
+
+        setMessages((prev) => [...prev, assistantMessage])
+      })
+      .catch((error) => {
+        const errorMessage = {
+          id: Date.now() + 1,
+          sender: 'assistant',
+          text: error.response?.data?.detail || 'Could not send message'
+        }
+
+        setMessages((prev) => [...prev, errorMessage])
+      })
+      .finally(() => {
+        setLoading(false)
       })
   }
 
   return (
-    <div>
-      <h1>AI Shopping Assistant</h1>
+    <div className="chat-page">
+      <main className="chat-main">
+        <div className="chat-title">
+          <h1>⚽ JERZO AI</h1>
+          <p>
+            Ask anything about jerseys, teams, styles, recommendations and availability.
+          </p>
+        </div>
 
-     <textarea
-        placeholder="Hi! I'm your AI shopping assistant. Ask me anything about our products..."
-        value={message}
-        onChange={(event) => setMessage(event.target.value)}
-        style={{
-            width: '700px',
-            height: '180px',
-            padding: '12px',
-            fontSize: '16px',
-            resize: 'vertical'
-        }}
-    />
+        <div className="chat-messages">
+          {messages.length === 0 ? (
+            <div className="chat-empty">
+              <h2>How can I help you today?</h2>
+            </div>
+          ) : (
+            messages.map((message) => (
+              <div
+                className={`chat-message ${message.sender === 'user' ? 'user' : 'assistant'}`}
+                key={message.id}
+              >
+                <div className="chat-avatar">
+                  {message.sender === 'user' ? '👤' : '⚽'}
+                </div>
 
-      <br />
+                <div className="chat-bubble">
+                  {message.text}
+                </div>
+              </div>
+            ))
+          )}
 
-      <button type="button" onClick={sendMessage}>
-        Send
-      </button>
+          {loading && (
+            <div className="chat-message assistant">
+              <div className="chat-avatar">⚽</div>
+              <div className="chat-bubble">Thinking...</div>
+            </div>
+          )}
+        </div>
 
-      <h2>Response</h2>
+        <div className="chat-input-area">
+          <textarea
+            placeholder="Ask JERZO AI..."
+            value={inputMessage}
+            onChange={(event) => setInputMessage(event.target.value)}
+          />
 
-      <p>{response}</p>
+          <button type="button" onClick={sendMessage}>
+            ➤
+          </button>
+        </div>
+      </main>
     </div>
   )
 }

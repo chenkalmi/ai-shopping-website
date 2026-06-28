@@ -1,0 +1,81 @@
+.home-page {
+  width: 100%;
+  background: white;
+}
+
+.hero-section {
+  width: 100%;
+  height: 600px;
+  overflow: hidden;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.search-section {
+  padding: 32px 48px 0;
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.search-section input {
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.search-section button {
+  padding: 12px 22px;
+  border: none;
+  background: #111;
+  color: white;
+  cursor: pointer;
+}
+
+.products-section {
+  padding: 37px 48px 80px;
+}
+
+.products-section h2 {
+  font-size: 32px;
+  margin-bottom: 6px;
+}
+
+.products-section p {
+  color: #777;
+  margin-bottom: 30px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 55px 45px;
+}
+
+.hero-text {
+    width:100%;
+    text-align: center;
+    margin: 0px 0 20px;
+}
+
+.hero-quote {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 45px;
+    color: #666;
+    font-weight: normal;
+    line-height: 1.05;
+    margin: 0;
+}
+
+.hero-quote span {
+    display: block;
+    font-size: 40px;
+    margin-top: 8px;
+}

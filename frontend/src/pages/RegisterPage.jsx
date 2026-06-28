@@ -1,3 +1,4 @@
+import './RegisterPage.css'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { registerApi } from '../services/authApi'
@@ -38,77 +39,89 @@ function RegisterPage() {
   }
 
   return (
-    <div>
-      <h1>Create Account</h1>
+    <div className="register-page">
+      <div className="register-card">
+        <h1>Create Account</h1>
 
-      <input
-        type="text"
-        placeholder="First name"
-        value={formData.first_name}
-        onChange={(event) => updateFormData('first_name', event.target.value)}
-      />
+        <p className="register-subtitle">
+          Join JERZO and start building your jersey collection.
+        </p>
 
-      <input
-        type="text"
-        placeholder="Last name"
-        value={formData.last_name}
-        onChange={(event) => updateFormData('last_name', event.target.value)}
-      />
+        <div className="register-grid">
+          <input
+            type="text"
+            placeholder="First name"
+            value={formData.first_name}
+            onChange={(event) => updateFormData('first_name', event.target.value)}
+          />
 
-      <input
-        type="email"
-        placeholder="Email"
-        value={formData.email}
-        onChange={(event) => updateFormData('email', event.target.value)}
-      />
+          <input
+            type="text"
+            placeholder="Last name"
+            value={formData.last_name}
+            onChange={(event) => updateFormData('last_name', event.target.value)}
+          />
 
-      <input
-        type="text"
-        placeholder="Phone"
-        value={formData.phone}
-        onChange={(event) => updateFormData('phone', event.target.value)}
-      />
+          <input
+            type="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={(event) => updateFormData('email', event.target.value)}
+          />
 
-      <input
-        type="text"
-        placeholder="Country"
-        value={formData.country}
-        onChange={(event) => updateFormData('country', event.target.value)}
-      />
+          <input
+            type="text"
+            placeholder="Phone"
+            value={formData.phone}
+            onChange={(event) => updateFormData('phone', event.target.value)}
+          />
 
-      <input
-        type="text"
-        placeholder="City"
-        value={formData.city}
-        onChange={(event) => updateFormData('city', event.target.value)}
-      />
+          <input
+            type="text"
+            placeholder="Country"
+            value={formData.country}
+            onChange={(event) => updateFormData('country', event.target.value)}
+          />
 
-      <input
-        type="text"
-        placeholder="Username"
-        value={formData.username}
-        onChange={(event) => updateFormData('username', event.target.value)}
-      />
+          <input
+            type="text"
+            placeholder="City"
+            value={formData.city}
+            onChange={(event) => updateFormData('city', event.target.value)}
+          />
 
-      <input
-        type="password"
-        placeholder="Password"
-        value={formData.password}
-        onChange={(event) => updateFormData('password', event.target.value)}
-      />
+          <input
+            type="text"
+            placeholder="Username"
+            value={formData.username}
+            onChange={(event) => updateFormData('username', event.target.value)}
+          />
 
-      <button type="button" onClick={registerUser}>
-        Create Account
-      </button>
+          <input
+            type="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={(event) => updateFormData('password', event.target.value)}
+          />
+        </div>
 
-      <p>
-        Already have an account?{' '}
-        <button type="button" onClick={() => navigate('/login')}>
-          Sign in
+        <button
+          className="register-button"
+          type="button"
+          onClick={registerUser}
+        >
+          Create Account
         </button>
-      </p>
 
-      <p>{message}</p>
+        {message && <p className="register-message">{message}</p>}
+
+        <p className="register-login-link">
+          Already have an account?
+          <span onClick={() => navigate('/login')}>
+            {' '}Sign In
+          </span>
+        </p>
+      </div>
     </div>
   )
 }

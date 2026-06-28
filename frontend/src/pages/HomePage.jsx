@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import heroImage from "../assets/hero.png";
+import "./HomePage.css";
 import ProductCard from '../components/ProductCard'
 import {
   getAvailableProducts,
@@ -10,17 +13,46 @@ function HomePage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [priceValue, setPriceValue] = useState('')
   const [stockValue, setStockValue] = useState('')
+  const [searchParams] = useSearchParams()
 
   useEffect(() => {
-    getAvailableProducts()
-      .then((response) => {
-        console.log(response.data)
-        setProducts(response.data)
-      })
-      .catch((error) => {
-        console.error('Error loading products:', error)
-      })
-  }, [])
+    const params = {}
+
+    const name = searchParams.get('name')
+    const priceOp = searchParams.get('price_op')
+    const priceValue = searchParams.get('price_value')
+    const stockOp = searchParams.get('stock_op')
+    const stockValue = searchParams.get('stock_value')
+
+    if (name) params.name = name
+    if (priceOp && priceValue) {
+      params.price_op = priceOp
+      params.price_value = priceValue
+    }
+    if (stockOp && stockValue) {
+      params.stock_op = stockOp
+      params.stock_value = stockValue
+    }
+
+    if (Object.keys(params).length > 0) {
+      searchProductsApi(params)
+        .then((response) => {
+          setProducts(response.data)
+        })
+        .catch((error) => {
+          console.error('Error searching products:', error)
+          setProducts([])
+        })
+    } else {
+      getAvailableProducts()
+        .then((response) => {
+          setProducts(response.data)
+        })
+        .catch((error) => {
+          console.error('Error loading products:', error)
+        })
+    }
+  }, [searchParams])
 
   function searchProducts() {
     const params = {}
@@ -62,46 +94,42 @@ function HomePage() {
         console.error('Error loading products:', error)
       })
   }
-
   return (
-    <div>
-      <h1>AI Shopping Website</h1>
+    <div className="home-page">
 
-      <input
-        type="text"
-        placeholder="Search products..."
-        value={searchTerm}
-        onChange={(event) => setSearchTerm(event.target.value)}
-      />
+      <section className="hero-section">
+        <img
+          src={heroImage}
+          alt="Football jerseys"
+          className="hero-image"
+        />
+      </section>
 
-      <input
-        type="number"
-        placeholder="Max price"
-        value={priceValue}
-        onChange={(event) => setPriceValue(event.target.value)}
-      />
+      <section className="products-section">
 
-      <input
-        type="number"
-        placeholder="Min stock"
-        value={stockValue}
-        onChange={(event) => setStockValue(event.target.value)}
-      />
+        <div className="hero-text">
 
-      <button type="button" onClick={searchProducts}>
-        🔍 Search
-      </button>
+          <h1 className="hero-quote">
+            More than a jersey.
+            <br />
+            <span>
+              A memory. A passion. A lifestyle.
+            </span>
+          </h1>
 
-      <button type="button" onClick={resetSearch}>
-        Reset
-      </button>
+        </div>
 
-      <h2>Available Products</h2>
-      <p>Number of products: {products.length}</p>
+        <div className="products-grid">
+          {products.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+            />
+          ))}
+        </div>
 
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
+      </section>
+
     </div>
   )
 }

@@ -1,6 +1,8 @@
+import './FavoritesPage.css'
 import { useEffect, useState } from 'react'
 import ProductCard from '../components/ProductCard'
-import { getFavoritesApi,removeFavoriteApi } from '../services/favoritesApi'
+import { getFavoritesApi, removeFavoriteApi } from '../services/favoritesApi'
+
 function FavoritesPage() {
   const [favorites, setFavorites] = useState([])
 
@@ -21,6 +23,7 @@ function FavoritesPage() {
   function removeFavorite(productId) {
     removeFavoriteApi(productId)
       .then(() => {
+        window.dispatchEvent(new Event('favoritesUpdated'))
         loadFavorites()
       })
       .catch((error) => {
@@ -29,17 +32,31 @@ function FavoritesPage() {
   }
 
   return (
-    <div>
-      <h1>Favorites</h1>
+    <div className="favorites-page">
+      <h1 className="favorites-title">MY WISHLIST</h1>
 
-      {favorites.map((product) => (
-        <div key={product.id}>
-          <ProductCard product={product} showFavoriteButton={false} />
-          <button type="button" onClick={() => removeFavorite(product.id)}>
-            🗑️ Remove 
-          </button>
+      {favorites.length === 0 ? (
+        <p className="favorites-empty">Your wishlist is empty.</p>
+      ) : (
+        <div className="favorites-grid">
+          {favorites.map((product) => (
+            <div className="favorite-card-wrapper" key={product.id}>
+              <ProductCard
+                product={product}
+                showFavoriteButton={false}
+              />
+
+              <button
+                type="button"
+                className="favorite-remove-btn"
+                onClick={() => removeFavorite(product.id)}
+              >
+                ✕
+              </button>
+            </div>
+          ))}
         </div>
-      ))}
+      )}
     </div>
   )
 }

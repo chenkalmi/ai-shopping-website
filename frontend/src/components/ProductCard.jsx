@@ -1,77 +1,114 @@
-import { useState } from 'react'
-import { addFavoriteApi } from '../services/favoritesApi'
-import { addOrderItemApi } from '../services/ordersApi'
+import { useState } from "react";
+import { addFavoriteApi } from "../services/favoritesApi";
+import { addOrderItemApi } from "../services/ordersApi";
+import "./ProductCard.css";
 
-function ProductCard({ product, showFavoriteButton = true, showCartButton = true }) {
-  const [message, setMessage] = useState('')
+function ProductCard({
+    product,
+    showFavoriteButton = true,
+    showCartButton = true,
+}) {
+    const [message, setMessage] = useState("");
 
-  function addToFavorites() {
-    addFavoriteApi(product.id)
-      .then(() => {
-        setMessage('Added to favorites')
-      })
-      .catch((error) => {
-        console.error('Error adding favorite:', error)
-        if (error.response?.status === 401) {
-            setMessage('Please login before adding items to favorites')
-            } else {
-            setMessage(error.response?.data?.detail || 'Could not add to favorites')
-            }
-      })
-  }
-
-  function addToCart() {
-    addOrderItemApi(product.id, 1)
-      .then(() => {
-        setMessage('Added to cart')
-      })
-      .catch((error) => {
-        console.error('Error adding to cart:', error)
-        if (error.response?.status === 401) {
-            setMessage('Please login before adding items to cart')
-            } else {
-            setMessage(error.response?.data?.detail || 'Could not add to cart')
-            }
-      })
-  }
-
-  return (
-    <div>
-        {product.image_url && (
-      <img
-        src={
-            product.image_url.startsWith('http')
+    const imageSrc = product.image_url
+        ? product.image_url.startsWith("http")
             ? product.image_url
             : `http://127.0.0.1:8000${product.image_url}`
-        }
-        alt={product.name}
-        style={{
-            width: '160px',
-            height: '160px',
-            objectFit: 'cover'
-        }}
-       />
-        )}
+        : null;
 
-        <h3>{product.name}</h3>
-        <p>Price: {product.price}</p>
-        <p>Stock: {product.stock}</p>
+    function addToFavorites() {
+        addFavoriteApi(product.id)
+            .then(() => {
+                setMessage("Added to favorites");
+                window.dispatchEvent(new Event("favoritesUpdated"));
+            })
+            .catch((error) => {
+                if (error.response?.status === 401) {
+                    setMessage("Please login first");
+                } else {
+                    setMessage(error.response?.data?.detail || "Could not add");
+                }
+            });
+    }
 
-        {showFavoriteButton && (
-        <button type="button" onClick={addToFavorites}>
-            ❤️ Add to Favorites
-        </button>
-        )}
+    function addToCart() {
+        addOrderItemApi(product.id, 1)
+            .then(() => {
+                setMessage("Added to cart");
+                window.dispatchEvent(new Event("cartUpdated"));
+            })
+            .catch((error) => {
+                if (error.response?.status === 401) {
+                    setMessage("Please login first");
+                } else {
+                    setMessage(error.response?.data?.detail || "Could not add");
+                }
+            });
+    }
 
-        {showCartButton && (
-        <button type="button" onClick={addToCart}>
-            🛒 Add to Cart
-        </button>
-        )}
+    return (
+        <div className="product-card">
+            <div className="product-image-box">
+                {imageSrc ? (
+                    <img
+                        src={imageSrc}
+                        alt={product.name}
+                        className="product-image"
+                    />
+                ) : (
+                    <div className="product-image-placeholder">
+                        No Image
+                    </div>
+                )}
 
-        <p>{message}</p>
-    </div>
-    )
+                {!product.is_active && (
+                    <span className="product-badge">
+                        Unavailable
+                    </span>
+                )}
+            </div>
+
+            <div className="product-info">
+                <h3>{product.name}</h3>
+
+                <p className="product-price">
+                    ${product.price}
+                </p>
+
+                <p className="product-stock">
+                    Stock: {product.stock}
+                </p>
+
+                <div className="product-actions">
+                    {showFavoriteButton && (
+                        <button
+                            type="button"
+                            onClick={addToFavorites}
+                            title="Add to Favorites"
+                        >
+                            ♡
+                        </button>
+                    )}
+
+                    {showCartButton && (
+                        <button
+                            type="button"
+                            onClick={addToCart}
+                            title="Add to Cart"
+                        >
+                            🛍
+                        </button>
+                    )}
+                </div>
+
+                {message && (
+                    <p className="product-message">
+                        {message}
+                    </p>
+                )}
+            </div>
+        </div>
+    );
 }
 
-export default ProductCard
+export default ProductCard;

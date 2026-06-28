@@ -1,8 +1,10 @@
+import './CartPage.css'
 import { useEffect, useState } from 'react'
 import {
     getTempOrderApi,
     removeOrderItemApi,
-    purchaseOrderApi
+    purchaseOrderApi,
+    updateOrderItemQuantityApi
 } from '../services/ordersApi'
 
 function CartPage() {
@@ -13,6 +15,16 @@ function CartPage() {
 
     useEffect(() => {
         loadTempOrder()
+
+        function refreshCartPage() {
+            loadTempOrder()
+        }
+
+        window.addEventListener('cartUpdated', refreshCartPage)
+
+        return () => {
+            window.removeEventListener('cartUpdated', refreshCartPage)
+        }
     }, [])
 
     function loadTempOrder() {
@@ -30,11 +42,26 @@ function CartPage() {
         removeOrderItemApi(productId)
             .then(() => {
                 setMessage('Item removed from cart')
+                window.dispatchEvent(new Event('cartUpdated'))
                 loadTempOrder()
             })
             .catch((error) => {
                 console.error('Error removing item:', error)
                 setMessage('Could not remove item')
+            })
+    }
+
+    function updateQuantity(productId, newQuantity) {
+        updateOrderItemQuantityApi(productId, newQuantity)
+            .then(() => {
+                loadTempOrder()
+                window.dispatchEvent(new Event('cartUpdated'))
+            })
+            .catch((error) => {
+                console.error(error)
+                setMessage(
+                    error.response?.data?.detail || 'Could not update quantity'
+                )
             })
     }
 
@@ -49,6 +76,7 @@ function CartPage() {
                 setMessage('Order purchased successfully')
                 setShippingAddress('')
                 setShowAddressForm(false)
+                window.dispatchEvent(new Event('cartUpdated'))
                 loadTempOrder()
             })
             .catch((error) => {
@@ -58,107 +86,149 @@ function CartPage() {
     }
 
     function getImageSrc(imageUrl) {
-        if (!imageUrl) {
-            return ''
-        }
-
-        if (imageUrl.startsWith('http')) {
-            return imageUrl
-        }
-
+        if (!imageUrl) return ''
+        if (imageUrl.startsWith('http')) return imageUrl
         return `http://127.0.0.1:8000${imageUrl}`
     }
 
     return (
-        <div>
-            <h1>Cart</h1>
+        <div className="cart-page">
+            <h1 className="cart-title">SHOPPING CART</h1>
 
-            {!tempOrder && <p>Your cart is empty</p>}
+            {message && <p className="cart-message">{message}</p>}
 
-            {tempOrder && (
-                <div>
-                    <p>Total price: {tempOrder.total_price}</p>
+            {!tempOrder || tempOrder.items.length === 0 ? (
+                <p className="cart-empty">Your cart is empty.</p>
+            ) : (
+                <div className="cart-layout">
+                    <div className="cart-table">
+                        <div className="cart-header">
+                            <span>Product</span>
+                            <span>Price</span>
+                            <span>Quantity</span>
+                            <span>Subtotal</span>
+                            <span></span>
+                        </div>
 
-                    {tempOrder.items.map((item) => (
-                        <div key={item.product_id}>
-                            {item.image_url && (
-                                <img
-                                    src={getImageSrc(item.image_url)}
-                                    alt={item.name}
-                                    style={{
-                                        width: '120px',
-                                        height: '120px',
-                                        objectFit: 'cover'
-                                    }}
+                        {tempOrder.items.map((item) => {
+                            const price = item.price_at_purchase || item.price
+                            const subtotal = price * item.quantity
+
+                            return (
+                                <div className="cart-row" key={item.product_id}>
+                                    <div className="cart-product">
+                                        {item.image_url && (
+                                            <img
+                                                src={getImageSrc(item.image_url)}
+                                                alt={item.product_name || item.name}
+                                            />
+                                        )}
+
+                                        <div>
+                                            <h3>
+                                                {item.product_name ||
+                                                    item.name ||
+                                                    `Product #${item.product_id}`}
+                                            </h3>
+
+                                            {!item.is_active && (
+                                                <p className="cart-inactive">
+                                                    This product is no longer available
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <p>${price}</p>
+
+                                    <div className="cart-quantity">
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                updateQuantity(item.product_id, item.quantity - 1)
+                                            }
+                                            disabled={item.quantity <= 1}
+                                        >
+                                            −
+                                        </button>
+
+                                        <span>{item.quantity}</span>
+
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                updateQuantity(item.product_id, item.quantity + 1)
+                                            }
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+
+                                    <p className="cart-subtotal">${subtotal.toFixed(2)}</p>
+
+                                    <button
+                                        type="button"
+                                        className="cart-remove"
+                                        onClick={() => removeItem(item.product_id)}
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+                            )
+                        })}
+                    </div>
+
+                    <div className="cart-summary">
+                        <h2>Order Summary</h2>
+
+                        <div className="summary-line">
+                            <span>Subtotal</span>
+                            <strong>${tempOrder.total_price}</strong>
+                        </div>
+
+                        <div className="summary-line">
+                            <span>Shipping</span>
+                            <strong>Calculated later</strong>
+                        </div>
+
+                        <div className="summary-total">
+                            <span>Total</span>
+                            <strong>${tempOrder.total_price}</strong>
+                        </div>
+
+                        {!showAddressForm ? (
+                            <button
+                                type="button"
+                                className="checkout-btn"
+                                onClick={() => setShowAddressForm(true)}
+                            >
+                                Purchase
+                            </button>
+                        ) : (
+                            <div className="address-box">
+                                <input
+                                    type="text"
+                                    placeholder="Shipping address"
+                                    value={shippingAddress}
+                                    onChange={(event) => setShippingAddress(event.target.value)}
                                 />
-                            )}
 
-                            <h3>
-                                {item.product_name || item.name || `Product #${item.product_id}`}
-                            </h3>
+                                <button type="button" onClick={purchaseOrder}>
+                                    Confirm Purchase
+                                </button>
 
-                            {!item.is_active && (
-                                <p style={{ color: 'red' }}>
-                                    ❌ This product is no longer available
-                                </p>
-                            )}
-
-                            <p>Quantity: {item.quantity}</p>
-                            <p>Price: {item.price_at_purchase || item.price}</p>
-
-                            <p>
-                                Subtotal:{' '}
-                                {(item.price_at_purchase || item.price) * item.quantity}
-                            </p>
-
-                            <button
-                                type="button"
-                                onClick={() => removeItem(item.product_id)}
-                            >
-                                🗑️ Remove
-                            </button>
-                        </div>
-                    ))}
-
-                    {!showAddressForm && (
-                        <button
-                            type="button"
-                            onClick={() => setShowAddressForm(true)}
-                        >
-                            Purchase
-                        </button>
-                    )}
-
-                    {showAddressForm && (
-                        <div>
-                            <input
-                                type="text"
-                                placeholder="Shipping address"
-                                value={shippingAddress}
-                                onChange={(event) =>
-                                    setShippingAddress(event.target.value)
-                                }
-                            />
-
-                            <button
-                                type="button"
-                                onClick={purchaseOrder}
-                            >
-                                Confirm Purchase
-                            </button>
-
-                            <button
-                                type="button"
-                                onClick={() => setShowAddressForm(false)}
-                            >
-                                Cancel
-                            </button>
-                        </div>
-                    )}
+                                <button
+                                    type="button"
+                                    className="cancel-btn"
+                                    onClick={() => setShowAddressForm(false)}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 </div>
             )}
-
-            <p>{message}</p>
         </div>
     )
 }
