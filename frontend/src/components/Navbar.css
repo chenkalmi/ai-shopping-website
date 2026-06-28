@@ -54,6 +54,15 @@
   font-weight: 500;
 }
 
+.chatbot-icon {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+
+    position: relative;
+    top: 3px;
+}
+
 .nav-link:hover {
   text-decoration: underline;
 }
@@ -336,4 +345,10 @@
   color: #aaa;
   font-size: 15px;
   padding: 10px 0;
+}
+
+.nav-icon svg {
+    width: 28px;
+    height: 28px;
+    stroke-width: 1.8;
 }

@@ -5,6 +5,14 @@ import { getFavoritesApi, removeFavoriteApi } from "../services/favoritesApi";
 import { getTempOrderApi, removeOrderItemApi, updateOrderItemQuantityApi } from "../services/ordersApi";
 import "./Navbar.css";
 import { getConversationsApi } from "../services/chatApi";
+import chatbotLogo from "../assets/chatbot-logo.png";
+import {
+    HiOutlineShoppingBag,
+    HiOutlineHeart,
+    HiOutlineMagnifyingGlass,
+    HiOutlineUser,
+    HiOutlineLockClosed
+} from "react-icons/hi2";
 
 function Navbar() {
     const navigate = useNavigate();
@@ -143,19 +151,6 @@ function Navbar() {
         return `http://127.0.0.1:8000${imageUrl}`;
     }
 
-    function openCartDrawer() {
-        getTempOrderApi()
-            .then((response) => {
-                setDrawerCart(response.data);
-                setCartCount(response.data.items.length);
-                setShowCartDrawer(true);
-            })
-            .catch((error) => {
-                console.error("Error loading cart:", error);
-                navigate("/login");
-            });
-    }
-
     function removeFromCartDrawer(productId) {
         removeOrderItemApi(productId)
             .then(() => {
@@ -190,16 +185,42 @@ function Navbar() {
             })
     }
 
+    function openCartDrawer() {
+        getTempOrderApi()
+            .then((response) => {
+                setDrawerCart(response.data)
+                setCartCount(response.data.items.length)
+                setShowCartDrawer(true)
+            })
+            .catch((error) => {
+                if (error.response?.status === 401) {
+                    navigate("/login")
+                    return
+                }
+
+                setDrawerCart(null)
+                setCartCount(0)
+                setShowCartDrawer(true)
+            })
+    }
+
     function openChatDrawer() {
         getConversationsApi()
             .then((response) => {
-                setChatConversations(response.data);
-                setShowChatDrawer(true);
+                setChatConversations(response.data)
+                setShowChatDrawer(true)
             })
             .catch((error) => {
-                console.error("Error loading chat history:", error);
-                navigate("/login");
-            });
+                console.error("Error loading chat history:", error)
+
+                if (error.response?.status === 401) {
+                    navigate("/login")
+                    return
+                }
+
+                setChatConversations([])
+                setShowChatDrawer(true)
+            })
     }
 
     return (
@@ -210,13 +231,17 @@ function Navbar() {
                     className="nav-icon"
                     onClick={openChatDrawer}
                 >
-                    ⚽
+                    <img
+                        src={chatbotLogo}
+                        alt="JERZO AI"
+                        className="chatbot-icon"
+                    />
                 </button>
                 <button
                     className="nav-icon nav-icon-with-badge"
                     onClick={openCartDrawer}
                 >
-                    🛍
+                    <HiOutlineShoppingBag />
 
                     {cartCount > 0 && (
                         <span className="nav-badge">
@@ -229,7 +254,7 @@ function Navbar() {
                     className="nav-icon nav-icon-with-badge"
                     onClick={openFavoritesDrawer}
                 >
-                    ♡
+                    <HiOutlineHeart />
                     {favoritesCount > 0 && (
                         <span className="nav-badge">{favoritesCount}</span>
                     )}
@@ -237,7 +262,7 @@ function Navbar() {
 
                 <div className="search-menu">
                     <button className="nav-icon" onClick={() => setShowSearch(!showSearch)}>
-                        🔍
+                        <HiOutlineMagnifyingGlass />
                     </button>
 
                     {showSearch && (
@@ -290,7 +315,7 @@ function Navbar() {
                             className="nav-icon"
                             onClick={() => setShowAccountMenu(!showAccountMenu)}
                         >
-                            🔒
+                            <HiOutlineLockClosed />
                         </button>
 
                         <div className={`dropdown ${showAccountMenu ? "dropdown-open" : ""}`}>
@@ -304,7 +329,7 @@ function Navbar() {
                             className="nav-icon"
                             onClick={() => setShowAccountMenu(!showAccountMenu)}
                         >
-                            👤
+                            <HiOutlineUser />
                         </button>
 
                         <div className={`dropdown ${showAccountMenu ? "dropdown-open" : ""}`}>
