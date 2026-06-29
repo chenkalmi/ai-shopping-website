@@ -7,6 +7,10 @@ import {
     deleteManagerProductApi,
     uploadManagerProductImageApi
 } from '../services/managerApi'
+import {
+  HiOutlinePencil,
+  HiOutlineTrash
+} from "react-icons/hi2";
 
 function AdminProductsPage() {
     const [products, setProducts] = useState([])
@@ -265,7 +269,7 @@ function AdminProductsPage() {
                                         title="Update product"
                                         onClick={() => setEditingProductId(product.id)}
                                     >
-                                        ✏️
+                                        <HiOutlinePencil />
                                     </button>
 
                                     <button
@@ -273,7 +277,7 @@ function AdminProductsPage() {
                                         title="Delete product"
                                         onClick={() => deleteProduct(product.id)}
                                     >
-                                        🗑️
+                                        <HiOutlineTrash />
                                     </button>
                                 </div>
                             </>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { addFavoriteApi } from "../services/favoritesApi";
 import { addOrderItemApi } from "../services/ordersApi";
 import "./ProductCard.css";
+import { HiOutlineHeart, HiOutlineShoppingBag } from "react-icons/hi2";
 
 function ProductCard({
     product,
@@ -86,7 +87,7 @@ function ProductCard({
                             onClick={addToFavorites}
                             title="Add to Favorites"
                         >
-                            ♡
+                            <HiOutlineHeart />
                         </button>
                     )}
 
@@ -96,7 +97,7 @@ function ProductCard({
                             onClick={addToCart}
                             title="Add to Cart"
                         >
-                            🛍
+                            <HiOutlineShoppingBag />
                         </button>
                     )}
                 </div>
