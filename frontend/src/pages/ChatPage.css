@@ -34,15 +34,27 @@
 }
 
 .chat-history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+
   padding: 12px;
   border-radius: 10px;
-  color: #ddd;
+
+  background: #111;
+  color: #fff;
+
+  border: 1px solid #111;
   cursor: pointer;
+
+  transition: 0.2s;
 }
 
 .chat-history-item.active,
 .chat-history-item:hover {
-  background: #222;
+  background: #111;
   color: white;
 }
 
@@ -170,4 +182,39 @@
   background: #111;
   color: white;
   cursor: pointer;
+}
+
+.chat-history-agent-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+.chat-title-icon {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  border-radius: 50%;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.chat-user-icon {
+  width: 26px;
+  height: 26px;
+  stroke-width: 1.8;
+}
+
+.chat-message-ai-icon {
+  width: 60px;
+  height: 60x;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.chat-user-icon {
+  width: 60px;
+  height: 60px;
+  stroke-width: 1.8;
 }
