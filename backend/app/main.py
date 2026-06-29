@@ -7,6 +7,9 @@ from backend.app.routers.favorites import router as favorites_router
 from backend.app.routers.orders import router as orders_router
 from backend.app.routers.chat import router as chat_router
 from backend.app.routers.manager import router as manager_router
+import os
+
+os.makedirs("backend/uploads", exist_ok=True)
 
 
 app = FastAPI(title="AI Shopping Website")
