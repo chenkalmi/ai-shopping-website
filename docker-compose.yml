@@ -32,7 +32,7 @@ services:
       DATABASE_URL: mysql+pymysql://root:root@mysql:3306/ai_shopping_db
       REDIS_HOST: redis
       REDIS_PORT: "6379"
-    
+      command: sh -c "python -m backend.app.database.create_tables && python -m backend.app.database.seed_data && uvicorn backend.app.main:app --host 0.0.0.0 --port 8000"    
 
   frontend:
     build:

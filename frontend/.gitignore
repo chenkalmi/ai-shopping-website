@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+backend/uploads/*
+!backend/uploads/.gitkeep
+!backend/uploads/*.png
+!backend/uploads/*.jpg
+!backend/uploads/*.jpeg

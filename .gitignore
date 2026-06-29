@@ -5,3 +5,5 @@ __pycache__/
 .envbackend/uploads/
 .env
 backend/uploads/
+backend/uploads/*
+!backend/uploads/.gitkeep

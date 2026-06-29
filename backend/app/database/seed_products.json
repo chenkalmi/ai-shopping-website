@@ -1,0 +1,86 @@
+[
+    {
+        "name": "France Away Jersey - FIFA World Cup 2026",
+        "price": 49.97,
+        "stock": 9,
+        "is_active": true,
+        "image_url": "/uploads/צילום מסך 2026-06-28 ב-2.46.09.png"
+    },
+    {
+        "name": "Panama Away Jersey – FIFA World Cup 2026",
+        "price": 49.97,
+        "stock": 10,
+        "is_active": true,
+        "image_url": "/uploads/צילום מסך 2026-06-28 ב-2.55.52.png"
+    },
+    {
+        "name": "Switzerland Away Jersey – FIFA World Cup 2026 ",
+        "price": 49.97,
+        "stock": 10,
+        "is_active": true,
+        "image_url": "/uploads/צילום מסך 2026-06-28 ב-2.57.55.png"
+    },
+    {
+        "name": "Australia Home Jersey – FIFA World Cup 2026 ",
+        "price": 49.97,
+        "stock": 10,
+        "is_active": true,
+        "image_url": "/uploads/צילום מסך 2026-06-28 ב-2.59.43.png"
+    },
+    {
+        "name": "South Korea Away Jersey – FIFA World Cup 2026",
+        "price": 49.97,
+        "stock": 10,
+        "is_active": true,
+        "image_url": "/uploads/צילום מסך 2026-06-28 ב-3.02.16.png"
+    },
+    {
+        "name": "Senegal Home Jersey – FIFA World Cup 2026",
+        "price": 49.97,
+        "stock": 9,
+        "is_active": true,
+        "image_url": "/uploads/צילום מסך 2026-06-28 ב-3.04.04.png"
+    },
+    {
+        "name": "USA Home Jersey – FIFA World Cup 2026 ",
+        "price": 49.97,
+        "stock": 9,
+        "is_active": true,
+        "image_url": "/uploads/צילום מסך 2026-06-28 ב-3.05.09.png"
+    },
+    {
+        "name": "Uruguay Home Jersey – FIFA World Cup 2026 ",
+        "price": 49.97,
+        "stock": 10,
+        "is_active": true,
+        "image_url": "/uploads/צילום מסך 2026-06-28 ב-3.06.41.png"
+    },
+    {
+        "name": "New Zealand Home Jersey – FIFA World Cup 2026 ",
+        "price": 49.97,
+        "stock": 10,
+        "is_active": true,
+        "image_url": "/uploads/צילום מסך 2026-06-28 ב-3.08.30.png"
+    },
+    {
+        "name": "Mexico Home Jersey – FIFA World Cup 2026 ",
+        "price": 49.97,
+        "stock": 10,
+        "is_active": true,
+        "image_url": "/uploads/צילום מסך 2026-06-28 ב-3.10.05.png"
+    },
+    {
+        "name": "AS Roma Away Jersey – 24/25",
+        "price": 49.97,
+        "stock": 9,
+        "is_active": true,
+        "image_url": "/uploads/צילום מסך 2026-06-28 ב-3.11.52.png"
+    },
+    {
+        "name": "Real Madrid Away Jersey 24/25",
+        "price": 49.97,
+        "stock": 10,
+        "is_active": true,
+        "image_url": "/uploads/צילום מסך 2026-06-28 ב-3.13.36.png"
+    }
+]
